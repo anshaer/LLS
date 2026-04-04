@@ -1,77 +1,122 @@
-/* 引入藝術字型 */
 @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=UnifrakturMaguntia&family=Yuji+Syuku&display=swap');
 
 :root {
-    --void-purple: #1a0033;
+    --void-purple: #0a001a;
+    --mist-purple: #1e003d;
     --blood-red: #ff3333;
-    --accent-purple: #4b0082;
+    --text-color: rgba(210, 180, 255, 0.85);
 }
 
 body {
-    background-color: var(--void-purple);
-    /* 奇特紋路背景：使用線性漸層模擬分形感 */
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(75, 0, 130, 0.2) 0%, transparent 80%),
-        repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px);
-    color: #d8b4fe;
+    background: radial-gradient(circle at center, var(--mist-purple) 0%, var(--void-purple) 100%);
+    background-attachment: fixed;
+    color: var(--text-color);
     margin: 0;
+    padding: 0;
+    width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
     overflow: hidden;
-    transition: background 0.5s;
+    transition: background-color 0.3s ease;
 }
 
-/* 14秒一次的靈魂抖動 */
+/* 震動類名 */
 .soul-shake {
     animation: master-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    background-color: #2a0000 !important;
 }
 
 @keyframes master-shake {
-    10%, 90% { transform: translate3d(-2px, 0, 0); }
-    20%, 80% { transform: translate3d(4px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
-    40%, 60% { transform: translate3d(8px, 0, 0); }
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, -2px, 0); }
+    20%, 40%, 60%, 80% { transform: translate3d(6px, 2px, 0); }
 }
 
-/* 三種語言的藝術字型定義 */
-.lang-zh { font-family: 'Ma+Shan+Zheng', cursive; } /* 中文：馬善政毛筆體 */
-.lang-en { font-family: 'UnifrakturMaguntia', cursive; } /* 英文：哥德體 */
-.lang-ja { font-family: 'Yuji+Syuku', serif; } /* 日文：游治修體 */
-
+/* 容器與佈局 */
 .container {
-    width: 85%;
-    max-width: 500px;
-    height: 80vh;
-    padding: 20px;
-    background: rgba(10, 0, 20, 0.9);
-    border: 1px solid var(--accent-purple);
-    box-shadow: 0 0 50px rgba(75, 0, 130, 0.5);
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
+    background: transparent;
 }
 
-.title {
-    font-size: 1.5rem;
+/* 語言切換 */
+.lang-switch {
+    position: absolute;
+    top: 45px; /* 避開瀏海 */
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+.lang-btn {
+    font-size: 0.8rem;
+    color: #666;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lang-btn.active {
     color: var(--blood-red);
+    text-shadow: 0 0 8px var(--blood-red);
+}
+
+/* 標題 */
+.title {
+    margin-top: 80px;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
     text-align: center;
-    text-shadow: 0 0 15px var(--blood-red);
+    color: var(--blood-red);
+    text-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    padding: 0 25px;
+    line-height: 1.5;
+}
+
+.timer {
+    font-size: 0.75rem;
+    text-align: center;
+    color: #555;
     margin-bottom: 20px;
 }
 
+/* 故事顯示區 */
 .story-wrapper {
     flex: 1;
-    overflow: hidden;
+    margin: 0 30px;
     position: relative;
-    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
 #story-content {
-    line-height: 2.2;
+    line-height: 2.4;
     font-size: 1.2rem;
-    transition: transform 0.6s ease-in-out;
+    padding-top: 20px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    column-fill: auto;
+    text-align: justify;
+}
+
+/* 三語字體切換 */
+.lang-zh #story-content { font-family: 'Ma Shan Zheng', cursive; }
+.lang-en #story-content { font-family: 'UnifrakturMaguntia', cursive; }
+.lang-ja #story-content { font-family: 'Yuji Syuku', serif; }
+
+/* 導覽符號 */
+footer {
+    padding: 20px 50px 40px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-symbol {
@@ -79,20 +124,11 @@ body {
     color: var(--blood-red);
     cursor: pointer;
     filter: drop-shadow(0 0 5px red);
+    user-select: none;
 }
 
-.lang-switch {
-    position: absolute;
-    top: -40px;
-    width: 100%;
-    text-align: center;
+#page-info {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #444;
 }
-
-.lang-switch span {
-    margin: 0 15px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    opacity: 0.5;
-}
-
-.lang-switch span.active { opacity: 1; color: var(--blood-red); text-decoration: underline; }
