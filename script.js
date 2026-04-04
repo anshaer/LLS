@@ -3,17 +3,20 @@ let currentLang = 'zh';
 let currentPage = 0;
 let totalPages = 1;
 
-async function init() {
-    const response = await fetch('languages.json');
-    allData = await response.json();
-    
-    // 每 14 秒觸發一次全螢幕抖動
-    setInterval(() => {
-        document.body.classList.add('soul-shake');
-        setTimeout(() => document.body.classList.remove('soul-shake'), 500);
-    }, 14000);
+// 震動間隔序列
+const shakeIntervals = [14, 9, 12];
+let shakeIndex = 0;
 
-    renderPage();
+async function init() {
+    try {
+        const response = await fetch('languages.json');
+        allData = await response.json();
+        renderPage();
+        startCountdown();
+        startErraticShaking();
+    } catch (e) {
+        console.error("莉莉絲攔截了請求", e);
+    }
 }
 
 function renderPage() {
@@ -21,15 +24,15 @@ function renderPage() {
     const container = document.querySelector('.container');
     const content = document.getElementById('story-content');
     
-    // 切換容器字型
+    // 更新語系 Class
     container.className = `container lang-${currentLang}`;
-    
     document.querySelector('.title').innerHTML = data.title;
     content.innerText = data.content;
     
-    // 更新語言按鈕狀態
+    // 更新按鈕狀態
     document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes(currentLang));
+        const btnLang = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+        btn.classList.toggle('active', btnLang === currentLang);
     });
 
     setTimeout(layoutStory, 100);
@@ -38,30 +41,55 @@ function renderPage() {
 function layoutStory() {
     const wrapper = document.querySelector('.story-wrapper');
     const content = document.getElementById('story-content');
-    const viewWidth = wrapper.offsetWidth;
+    const viewWidth = wrapper.getBoundingClientRect().width;
     
     content.style.columnWidth = `${viewWidth}px`;
-    content.style.columnGap = `40px`;
+    content.style.columnGap = `50px`;
     
-    totalPages = Math.ceil(content.scrollWidth / viewWidth);
+    // 計算總頁數 (寬度 / 頁寬+間距)
+    totalPages = Math.ceil(content.scrollWidth / (viewWidth + 50));
     updateNavigation();
 }
 
 function updateNavigation() {
     const wrapper = document.querySelector('.story-wrapper');
     const content = document.getElementById('story-content');
-    const viewWidth = wrapper.offsetWidth;
-    content.style.transform = `translateX(-${currentPage * (viewWidth + 40)}px)`;
-    document.getElementById('page-info').innerText = `${allData[currentLang].page_prefix}${currentPage + 1} / ${totalPages}`;
+    const viewWidth = wrapper.getBoundingClientRect().width;
+    
+    const offset = currentPage * (viewWidth + 50);
+    content.style.transform = `translateX(-${offset}px)`;
+    
+    const data = allData[currentLang];
+    document.getElementById('page-info').innerText = `${data.page_prefix}${currentPage + 1} / ${totalPages}`;
 }
 
-function changeLang(lang) {
-    currentLang = lang;
-    currentPage = 0;
-    renderPage();
+// 遞迴不規則震動
+function startErraticShaking() {
+    const currentDelay = shakeIntervals[shakeIndex] * 1000;
+    setTimeout(() => {
+        document.body.classList.add('soul-shake');
+        setTimeout(() => document.body.classList.remove('soul-shake'), 500);
+        
+        shakeIndex = (shakeIndex + 1) % shakeIntervals.length;
+        startErraticShaking();
+    }, currentDelay);
 }
 
-function nextPage() { if(currentPage < totalPages-1) { currentPage++; updateNavigation(); } }
+function startCountdown() {
+    const target = new Date("April 1, 2027 00:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const dist = target - now;
+        const d = Math.floor(dist / 86400000);
+        const h = Math.floor((dist % 86400000) / 3600000);
+        const m = Math.floor((dist % 3600000) / 60000);
+        const s = Math.floor((dist % 60000) / 1000);
+        document.getElementById("countdown").innerText = `${allData[currentLang].countdown_prefix}${d}d ${h}h ${m}m ${s}s`;
+    }, 1000);
+}
+
+// 分頁控制
+function nextPage() { if(currentPage < totalPages - 1) { currentPage++; updateNavigation(); } }
 function prevPage() { if(currentPage > 0) { currentPage--; updateNavigation(); } }
 
 window.onload = init;
