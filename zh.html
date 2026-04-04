@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>莉莉絲的受難日｜正體中文</title>
+    <title>莉莉絲的受難日</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="lang-zh" data-lang="zh">
@@ -15,22 +15,25 @@
         </div>
 
         <header>
-            <h1 class="title">正在讀取預言...</h1>
-            <div id="countdown" class="timer">連結森林中...</div>
+            <h1 class="title">莉莉絲的受難日</h1>
+            <div id="countdown" class="timer">載入中...</div>
         </header>
 
+        <nav class="story-tabs">
+            <div class="tab-item active" onclick="switchTab(0)">初遇</div>
+            <div class="tab-item" onclick="switchTab(1)">誘惑</div>
+            <div class="tab-item" onclick="switchTab(2)">侵蝕</div>
+            <div class="tab-item" onclick="switchTab(3)">化身</div>
+        </nav>
+
         <main class="story-wrapper">
-            <div id="story-content">
-                </div>
+            <div id="story-content"></div>
         </main>
 
         <footer>
-            <span class="nav-symbol" onclick="prevPage()">☾</span>
-            <span id="page-info">儀式進度: -- / --</span>
-            <span class="nav-symbol" onclick="nextPage()">☽</span>
+            <div id="status-text">地下森林深處...</div>
         </footer>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
