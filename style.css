@@ -1,142 +1,54 @@
-/* 引入藝術字型 */
-@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=UnifrakturMaguntia&family=Yuji+Syuku&display=swap');
-
-:root {
-    --void-purple: #0a001a;
-    --mist-purple: #1e003d;
-    --blood-red: #ff3333;
-    --text-color: rgba(210, 180, 255, 0.85);
-}
-
-body {
-    background: radial-gradient(circle at center, var(--mist-purple) 0%, var(--void-purple) 100%);
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(75, 0, 130, 0.15) 0%, transparent 80%),
-        repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px);
-    background-attachment: fixed;
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
+/* 移除原本的分頁相關 CSS，加入頁籤樣式 */
+.story-tabs {
     display: flex;
     justify-content: center;
-    overflow: hidden;
-    transition: background-color 0.4s ease;
-}
-
-/* 14s/9s/12s 不規則震動效果 */
-.soul-shake {
-    animation: master-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-    background-color: #2a0000 !important; /* 震動時背景泛紅 */
-}
-
-@keyframes master-shake {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    10%, 30%, 50%, 70%, 90% { transform: translate3d(-6px, -2px, 0); }
-    20%, 40%, 60%, 80% { transform: translate3d(6px, 2px, 0); }
-}
-
-.container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background: transparent;
-}
-
-/* 右上角極簡切換 */
-.lang-switch {
-    position: absolute;
-    top: 45px;
-    right: 20px;
-    display: flex;
     gap: 15px;
-    z-index: 100;
+    margin-bottom: 20px;
+    padding: 0 10px;
 }
 
-.lang-btn {
-    text-decoration: none;
-    font-size: 0.8rem;
-    color: #555;
-    transition: 0.3s;
-}
-
-.lang-btn.active {
-    color: var(--blood-red);
-    text-shadow: 0 0 10px var(--blood-red);
-    font-weight: bold;
-}
-
-/* 標題與計時器 */
-.title {
-    margin-top: 85px;
-    margin-bottom: 5px;
-    font-size: 1.35rem;
-    text-align: center;
-    color: var(--blood-red);
-    text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-    padding: 0 30px;
-    line-height: 1.4;
-}
-
-.timer {
-    font-size: 0.75rem;
-    text-align: center;
+.tab-item {
+    font-size: 0.9rem;
     color: #444;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+    letter-spacing: 2px;
 }
 
-/* 故事文本核心區 */
+.tab-item.active {
+    color: var(--blood-red);
+    border-bottom: 1px solid var(--blood-red);
+    text-shadow: 0 0 10px var(--blood-red);
+}
+
 .story-wrapper {
     flex: 1;
-    margin: 0 35px;
-    position: relative;
-    overflow: hidden;
-    /* 漸層遮罩：解決邊緣突兀問題 */
-    mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+    margin: 0 30px;
+    overflow-y: auto; /* 改為垂直捲動，防止文字太長放不下 */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 #story-content {
-    line-height: 2.5;
-    font-size: 1.25rem;
-    padding-top: 25px; /* 防止首行被遮擋 */
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    column-fill: auto;
+    line-height: 2.2;
+    font-size: 1.15rem;
+    padding: 20px 0 60px 0; /* 底部留白方便閱讀 */
     text-align: justify;
-    will-change: transform;
+    animation: fadeIn 0.8s ease;
 }
 
-/* 字體隔離套用 */
-.lang-zh #story-content { font-family: 'Ma Shan Zheng', cursive; }
-.lang-en #story-content { font-family: 'UnifrakturMaguntia', cursive; }
-.lang-ja #story-content { font-family: 'Yuji Syuku', serif; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-/* 底部導覽符號 */
+/* 隱藏原本的導航符號，因為改用頁籤了 */
 footer {
-    padding: 10px 50px 45px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-symbol {
-    font-size: 2.2rem;
-    color: var(--blood-red);
-    cursor: pointer;
-    filter: drop-shadow(0 0 8px red);
-    user-select: none;
-    opacity: 0.7;
-    transition: 0.3s;
-}
-
-.nav-symbol:hover { opacity: 1; transform: scale(1.1); }
-
-#page-info {
-    font-size: 0.75rem;
+    justify-content: center;
     color: #333;
-    letter-spacing: 2px;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
 }
+
