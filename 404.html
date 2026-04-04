@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>迷失在莉莉絲的森林</title>
+    <style>
+        :root {
+            --void-purple: #0a001a;
+            --blood-red: #ff3333;
+        }
+
+        body {
+            background-color: var(--void-purple);
+            color: #d1b3ff;
+            font-family: 'serif', 'Noto Serif TC';
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* 迷霧背景效果 */
+        .mist {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, #000 100%);
+            pointer-events: none;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            color: var(--blood-red);
+            text-shadow: 0 0 20px var(--blood-red);
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            animation: glitch 1s infinite;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            padding: 0 20px;
+            line-height: 1.8;
+            opacity: 0.8;
+        }
+
+        .lilis-whisper {
+            color: #888;
+            font-style: italic;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            margin-top: 50px;
+            color: var(--blood-red);
+            text-decoration: none;
+            border: 1px solid var(--blood-red);
+            padding: 10px 30px;
+            transition: 0.5s;
+            letter-spacing: 3px;
+        }
+
+        .back-link:hover {
+            background: var(--blood-red);
+            color: white;
+            box-shadow: 0 0 20px var(--blood-red);
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(-3px, -2px); }
+            60% { transform: translate(3px, 2px); }
+            80% { transform: translate(3px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* 靈魂震動動畫 (沿用主站風格) */
+        .soul-shake {
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, -2px); }
+            75% { transform: translate(2px, 2px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="mist"></div>
+    
+    <h1 class="error-code">404</h1>
+    
+    <div class="message">
+        <p>「哎呀...你好像走錯路了呢。」</p>
+        <p>這裡不是你該來的地方，這裡是森林的<strong>死胡同</strong>。</p>
+    </div>
+
+    <div class="lilis-whisper">
+        莉莉絲輕聲笑著：<br>
+        「既然迷路了，不如就留下來陪 Anshaer 吧？」
+    </div>
+
+    <a href="index.html" class="back-link">試圖逃離</a>
+
+    <script>
+        // 隨機抖動效果，增加不安感
+        setInterval(() => {
+            if(Math.random() > 0.9) {
+                document.body.classList.add('soul-shake');
+                setTimeout(() => {
+                    document.body.classList.remove('soul-shake');
+                }, 500);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
+
