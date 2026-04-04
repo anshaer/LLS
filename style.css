@@ -1,54 +1,101 @@
-/* 移除原本的分頁相關 CSS，加入頁籤樣式 */
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=UnifrakturMaguntia&family=Yuji+Syuku&display=swap');
+
+:root {
+    --void-purple: #0a001a;
+    --mist-purple: #1e003d;
+    --blood-red: #ff3333;
+    --text-color: rgba(210, 180, 255, 0.85);
+}
+
+body {
+    background: radial-gradient(circle at center, var(--mist-purple) 0%, var(--void-purple) 100%);
+    background-attachment: fixed;
+    color: var(--text-color);
+    margin: 0; padding: 0;
+    width: 100vw; height: 100vh;
+    display: flex; justify-content: center;
+    overflow: hidden;
+}
+
+.soul-shake {
+    animation: master-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    background-color: #2a0000 !important;
+}
+
+@keyframes master-shake {
+    0%, 100% { transform: translate(0, 0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate3d(-4px, -2px, 0); }
+    20%, 40%, 60%, 80% { transform: translate3d(4px, 2px, 0); }
+}
+
+.container {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    position: relative;
+}
+
+/* 語言切換 */
+.lang-switch {
+    position: absolute; top: 40px; right: 20px;
+    display: flex; gap: 15px; z-index: 100;
+}
+.lang-btn {
+    text-decoration: none; font-size: 0.8rem; color: #555;
+}
+.lang-zh .lang-btn[href="zh.html"], 
+.lang-en .lang-btn[href="en.html"], 
+.lang-ja .lang-btn[href="ja.html"] {
+    color: var(--blood-red); text-shadow: 0 0 8px var(--blood-red);
+}
+
+.title {
+    margin-top: 80px; margin-bottom: 5px;
+    font-size: 1.3rem; text-align: center; color: var(--blood-red);
+    text-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+}
+
+.timer {
+    font-size: 0.75rem; text-align: center; color: #444; margin-bottom: 15px;
+}
+
+/* 故事頁籤設計 */
 .story-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 0 10px;
+    display: flex; justify-content: center; gap: 10px;
+    margin-bottom: 20px; padding: 0 20px;
 }
-
 .tab-item {
-    font-size: 0.9rem;
-    color: #444;
-    cursor: pointer;
-    padding: 5px 10px;
+    font-size: 0.85rem; color: #555; cursor: pointer;
+    padding: 8px 12px; transition: 0.4s;
     border-bottom: 1px solid transparent;
-    transition: 0.3s;
-    letter-spacing: 2px;
 }
-
 .tab-item.active {
     color: var(--blood-red);
     border-bottom: 1px solid var(--blood-red);
     text-shadow: 0 0 10px var(--blood-red);
 }
 
+/* 故事文本區 */
 .story-wrapper {
-    flex: 1;
-    margin: 0 30px;
-    overflow-y: auto; /* 改為垂直捲動，防止文字太長放不下 */
+    flex: 1; margin: 0 30px; overflow-y: auto;
     mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
 }
-
 #story-content {
-    line-height: 2.2;
-    font-size: 1.15rem;
-    padding: 20px 0 60px 0; /* 底部留白方便閱讀 */
-    text-align: justify;
-    animation: fadeIn 0.8s ease;
+    line-height: 2.4; font-size: 1.2rem;
+    padding: 20px 0 80px 0; text-align: justify;
+    animation: fadeIn 0.8s ease forwards;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 隱藏原本的導航符號，因為改用頁籤了 */
-footer {
-    justify-content: center;
-    color: #333;
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-}
+/* 字體切換 */
+.lang-zh #story-content { font-family: 'Ma Shan Zheng', cursive; }
+.lang-en #story-content { font-family: 'UnifrakturMaguntia', cursive; }
+.lang-ja #story-content { font-family: 'Yuji Syuku', serif; }
 
+footer {
+    padding-bottom: 40px; text-align: center;
+    font-size: 0.7rem; color: #333; letter-spacing: 2px;
+}
