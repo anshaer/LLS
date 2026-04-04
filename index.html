@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>莉莉絲的預言｜終焉倒數</title>
+    <title>莉莉絲的受難日</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="overlay"></div>
-    <div class="container">
+    <div class="container lang-zh">
+        <div class="lang-switch">
+            <span class="lang-btn active" onclick="changeLang('zh')">正體中文</span>
+            <span class="lang-btn" onclick="changeLang('en')">English</span>
+            <span class="lang-btn" onclick="changeLang('ja')">日本語</span>
+        </div>
+
         <header>
-            <h1 class="title">莉莉絲的預言</h1>
-            <div id="countdown" class="timer">載入中...</div>
+            <h1 class="title">載入預言中...</h1>
+            <div id="countdown" style="text-align:center; font-size:0.8rem; color:#666;"></div>
         </header>
 
-        <main id="story-content">
-            </main>
+        <main class="story-wrapper">
+            <div id="story-content"></div>
+        </main>
 
-        <footer class="navigation">
-            <span id="prev-btn" class="nav-symbol">☾</span>
-            <span id="page-indicator">1 / 14</span>
-            <span id="next-btn" class="nav-symbol">☽</span>
+        <footer style="display:flex; justify-content:space-between; align-items:center; padding:10px;">
+            <span class="nav-symbol" onclick="prevPage()">☾</span>
+            <span id="page-info" style="font-size:0.8rem;"></span>
+            <span class="nav-symbol" onclick="nextPage()">☽</span>
         </footer>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
